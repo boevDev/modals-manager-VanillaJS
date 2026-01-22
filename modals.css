@@ -1,0 +1,118 @@
+:root {
+    /* Размеры и отступы */
+    --modal-space-h: 240px;
+    --modal-space-w: 240px;
+    --modal-padding-h: 64px;
+    --modal-padding-w: 64px;
+
+    /* Анимация */
+    --transition-modal: 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+
+    /* Цвета */
+    --modal-backdrop: rgba(0, 0, 0, 0.5);
+    --modal-container-bg: #ffffff;
+    --modal-shadow: rgba(0, 0, 0, 0.6);
+
+    /* Скролл */
+    --scroll-width: 8px;
+    --scroll-radius: 16rem;
+    --scroll-thumb: #8080805a;
+    --scroll-thumb-hover: #8080806a;
+    --scroll-thumb-active: #8080807a;
+    --scroll-space: 40px;
+
+    /* Scale анимация контейнера */
+    --modal-scale-start: 0.95;
+    --modal-scale-end: 1;
+}
+
+body.modal-open {
+    overflow: hidden;
+}
+
+.modal {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    width: 100%;
+    height: 100%;
+
+    background-color: var(--modal-backdrop);
+    backdrop-filter: blur(4px);
+
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+
+    transition:
+        opacity var(--transition-modal),
+        backdrop-filter var(--transition-modal),
+        visibility var(--transition-modal);
+}
+
+.modal[aria-hidden="false"],
+.modal--open {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+}
+
+.modal__container {
+    position: relative;
+    box-sizing: border-box;
+
+    background-color: var(--modal-container-bg);
+    border-radius: 24px;
+
+    max-width: calc(100% - var(--modal-space-w));
+    max-height: calc(100dvh - var(--modal-space-h));
+
+    padding-block: var(--modal-padding-h);
+    padding-left: var(--modal-padding-w);
+    padding-right: calc(var(--modal-padding-w));
+
+    box-shadow: 0px 0px 24px 0px var(--modal-shadow);
+
+    /* Анимация появления контейнера */
+    transform: scale(var(--modal-scale-start));
+    transition: transform var(--transition-modal);
+}
+
+.modal--open .modal__container {
+    transform: scale(var(--modal-scale-end));
+}
+
+.modal__content {
+    max-height: calc(100dvh - (var(--modal-space-h) * 2) - (var(--modal-padding-h) * 2));
+    overflow-y: auto;
+    padding-right: var(--scroll-space);
+}
+
+/* Кастомные скроллбары */
+.modal__content::-webkit-scrollbar {
+    width: var(--scroll-width);
+}
+
+.modal__content::-webkit-scrollbar-thumb {
+    background-color: var(--scroll-thumb);
+    border-radius: var(--scroll-radius);
+}
+
+.modal__content::-webkit-scrollbar-thumb:hover {
+    background-color: var(--scroll-thumb-hover);
+}
+
+.modal__content::-webkit-scrollbar-thumb:active {
+    background-color: var(--scroll-thumb-active);
+}
+
+.modal__closer {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+}
